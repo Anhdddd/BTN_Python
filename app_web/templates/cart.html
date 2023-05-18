@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    Giỏ hàng
+{% endblock %}
+
+{% block link_css %}
+    <link rel="stylesheet" href="{% static 'css/cart.css' %}">
+{% endblock %}
+
+{% block content %}
+<main>
+    <div class="title">
+        <p>GIỎ HÀNG CỦA BẠN</p>
+    </div>
+    <table class="container-table" id="table">
+        <thead>
+          <tr>
+            <th>Sản phẩm</th>
+            <th>Giá</th>
+            <th>Số lượng</th>
+            <th>Tổng giá</th>
+            <th>Xóa</th>
+          </tr>
+        </thead>
+        <tbody id="cart-tbody">
+          
+        </tbody>
+    </table>
+    <div class="result" id="result">
+        <div class="label">
+            <p>Tổng tiền:</p>
+        </div>
+        <div class="total-price">
+            <p id="total_price"></p>
+        </div>
+    </div>
+    <div>
+        <button class="btn-buy" id="order_button" onclick="window.location.href='/order/'">MUA HÀNG</button>
+    </div>
+    <script>
+      var list_product = {{ products_json|safe }};
+      var cart = JSON.parse(localStorage.getItem('cart'));
+      var list_product_with_quantity = list_product.map(function(product) {
+          var quantity = cart[product.id] || 0;
+          return {
+              id: product.id,
+              name: product.name,
+              price: product.price,
+              link_img: product.image,
+              quantity: quantity
+          };
+      });
+
+      // render table
+        var tbody = document.getElementById('cart-tbody');
+        var rowsHtml = list_product_with_quantity.map(function(product) {
+            return `
+                <tr>
+                    <td>
+                        <table class="product-info">
+                            <tr>
+                                <td><img src="/${product.link_img}" alt="Ảnh sản phẩm"></td>
+                                <td>${product.name}</td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td>${product.price}đ</td>
+                    <td>
+                        <button class="quantity-btn decrease" onclick='decrease(${product.id})'>-</button>
+                        <input type="text" class="quantity-input" id="quantity_of_id_${product.id}" value="${product.quantity}">
+                        <button class="quantity-btn increase" onclick='increase(${product.id})'>+</button>
+                    </td>
+                    <td id="total_price_of_${product.id}">${product.price * product.quantity}đ</td>
+                    <td><button class="delete-btn" onclick='remove_item_cart(${product.id})'><img src="{% static 'image/icon/icon-delete-16.jpg' %}" alt=""></button></td>
+                </tr>
+            `;
+        }).join('');
+        tbody.innerHTML = rowsHtml;
+        
+        var total_price = 0;
+        list_product_with_quantity.forEach(function(product) {
+            total_price += product.price * product.quantity;
+        });
+        document.getElementById('total_price').innerHTML = total_price + "đ";
+
+        function increase(id) {
+            var product = list_product_with_quantity.find(function(product) {
+                return product.id == id;
+            });
+            product.quantity++;
+            element_update = "quantity_of_id_" + id
+            document.getElementById(element_update).value = product.quantity;
+            element_update = "total_price_of_" + id
+            document.getElementById(element_update).innerHTML = product.price * product.quantity + "đ";
+            cart[id] = product.quantity;
+            localStorage.setItem('cart', JSON.stringify(cart));
+            total_price += product.price;
+            document.getElementById('total_price').innerHTML = total_price + "đ";
+        }
+        function decrease(id) {
+            var product = list_product_with_quantity.find(function(product) {
+                return product.id == id;
+            });
+            product.quantity--;
+            element_update = "quantity_of_id_" + id
+            document.getElementById(element_update).value = product.quantity;
+            element_update = "total_price_of_" + id
+            document.getElementById(element_update).innerHTML = product.price * product.quantity + "đ";
+            cart[id] = product.quantity;
+            localStorage.setItem('cart', JSON.stringify(cart));
+            total_price -= product.price;
+            document.getElementById('total_price').innerHTML = total_price + "đ";
+        }
+        function remove_item_cart(productId)
+        {
+            console.log("Da click 1", productId);
+            //Cập nhật lại list_product_with_quantity
+            list_product_with_quantity = list_product_with_quantity.filter(function(product) {
+                return product.id != productId;
+            });
+            if (cart[productId]) {
+                // Nếu sản phẩm có trong giỏ hàng, xóa sản phẩm khỏi giỏ hàng
+                delete cart[productId];
+                // Cập nhật giỏ hàng trong localStorage
+                localStorage.setItem('cart', JSON.stringify(cart));
+            }
+            console.log("Da click 2");
+            document.getElementById('total_price').innerHTML = total_price + "đ";
+            // Ẩn bảng nếu không còn sản phẩm nào
+            if (list_product_with_quantity.length == 0) {
+                document.getElementById('table').innerHTML = "Không có sản phẩm nào trong giỏ hàng";
+                document.getElementById('result').style.display = "none";
+                document.getElementById('order_button').style.display = "none";
+            }
+            // render table
+            rowsHtml = list_product_with_quantity.map(function(product) {
+                return `
+                <tr>
+                    <td>
+                        <table class="product-info">
+                            <tr>
+                                <td><img src="/${product.link_img}" alt="Ảnh sản phẩm"></td>
+                                <td>${product.name}</td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td>${product.price}đ</td>
+                    <td>
+                        <button class="quantity-btn decrease" onclick='decrease(${product.id})'>-</button>
+                        <input type="text" class="quantity-input" id="quantity_of_id_${product.id}" value="${product.quantity}">
+                        <button class="quantity-btn increase" onclick='increase(${product.id})'>+</button>
+                    </td>
+                    <td id="total_price_of_${product.id}">${product.price * product.quantity}đ</td>
+                    <td><button class="delete-btn" onclick='remove_item_cart(${product.id})'><img src="{% static 'image/icon/icon-delete-16.jpg' %}" alt=""></button></td>
+                </tr>
+            `;
+            }).join('');
+            tbody.innerHTML = rowsHtml;
+            total_price = 0;
+            list_product_with_quantity.forEach(function(product) {
+                total_price += product.price * product.quantity;
+            });
+            console.log("Da click 3");
+            document.getElementById('total_price').innerHTML = total_price + "đ";
+        }
+        
+    </script>
+</main>
+{% endblock %}

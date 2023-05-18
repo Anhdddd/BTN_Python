@@ -1,0 +1,71 @@
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    {% block link_css %}
+    {% endblock %}
+    <title>
+        {% block title %}
+        {% endblock %}
+    </title>
+    <link rel="shortcut icon" href="{% static 'image/shortcut_logo.png' %}">
+</head>
+<body>
+    <header>
+        <div class="logo-img">
+            <a href="/"><img src="{% static 'image/logo.png' %}" alt="logo"></a>
+        </div>
+        <nav>
+            <form action="{% url 'search_product' %}" method="POST">
+                {% csrf_token %}
+                <input type="text" id="text-search" name="text-search" placeholder="Tìm kiếm..."/>
+                <button type="submit" style="cursor: pointer;"><i class="fa fa-search"></i></button>
+            </form>
+            <a href="{% url 'purchase_history' %}">Đơn hàng của bạn</a>
+            <div class="cart" id="cart">
+                <i class='fas fa-shopping-cart'></i>
+                <span class="badge" id="number_notifi">0</span>
+            </div>
+            <div><i class="fa fa-user" style="color: white"></i>
+            </div>
+        </nav>
+    </header>
+    <script>
+        var cart = JSON.parse(localStorage.getItem("cart"));
+        console.log(cart)
+        if (cart == null) {
+            document.getElementById("number_notifi").style.display = "none";
+        } else {
+            document.getElementById("number_notifi").style.display = "block";
+            document.getElementById("number_notifi").innerHTML = Object.keys(cart).length;
+        }
+
+        /* Xử lý khi click vào biểu tượng giỏ hàng */
+        document.getElementById('cart').addEventListener('click', function() {
+            var productIds = Object.keys(cart);
+            if (productIds.length == 0) {
+                alert("Giỏ hàng của bạn đang trống");
+                return;
+            }
+            window.location.href = '/cart/?productIds=' + productIds.join(',');
+        });
+    </script>
+
+    {% block content %}
+    {% endblock %}
+
+    <footer>
+        <div class="note">Thực phẩm xanh, sạch, đảm bảo chất lượng theo quy định. Được phát triển bởi: <br>
+            <div class="members">
+                - Trần Đức Huy <br>
+                - Trần Ngọc Tín <br>
+                - Trần Anh Vũ
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/admin_base.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    {% block link_css %}
+    {% endblock %}
+    <title>
+        {% block title %}
+        {% endblock %}
+    </title>
+</head>
+<body>
+    <section class="nav-section">
+        <header>
+            <img src="{% static 'image/logo.png' %}" alt="logo">
+        </header>
+        <nav>
+            <!-- <div><i class="fa fa-dashboard"></i>Dashboard</div> -->
+            <div><i class="fa fa-product-hunt"></i>Product</div>
+            <div><i class="fa fa-shopping-cart"></i>Order</div>
+            <div><i class="fa fa-user"></i>User</div>             
+        </nav>
+    </section>
+    <section class="content-section">
+        <header>
+            <div class="notification">
+                <span class="icon">🔔</span>
+                <span class="badge" id="number_notifi">3</span>
+            </div>
+            <div class="user-info">
+                <span class="user-avatar">👨</span>
+                <span class="user-name">Admin</span>
+            </div>
+            <div class="logout">
+                <span class="icon"><i class="fa fa-sign-out"></i></span>
+                <span class="text">Logout</span>
+            </div>
+        </header>
+
+        {% block content %}
+        {% endblock %}
+
+    </section>
+    {% block content_hidden %}
+    {% endblock %}
+    <!-- Kiểm tra đóng form khi click bên ngoài form -->
+    <!-- <script>
+        document.getElementById('button-add').addEventListener('click', function() {
+            document.getElementById('overlay').style.display = 'block';
+        });
+        function closeForm() {
+            document.getElementById('overlay').style.display = 'none';
+        }
+        function previewFile(input) {
+            var file = input.files[0];
+            var reader = new FileReader();
+           
+            reader.addEventListener("load", function () {
+              var img = document.getElementById('img_add');
+              img.src = reader.result;
+            }, false);
+           
+            if (file) {
+              reader.readAsDataURL(file);
+            }
+        }
+        function chooseFile() {
+            var input = document.querySelector('input[type=file]');
+            input.click();
+        }
+        /*i = 0;
+        setInterval(function() {
+            i++;
+            console.log(i);
+            document.getElementById('number_notifi').innerHTML = i;
+        }, 1000);*/
+    </script> -->
+</body>
+</html>

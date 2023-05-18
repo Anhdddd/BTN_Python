@@ -1,0 +1,156 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+
+{% block title %}
+    Quản lý đơn hàng
+{% endblock %}
+
+{% block link_css %}
+    <link rel="stylesheet" href="{% static 'css/admin_order_cancel.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="title"><h3>Đặt hàng</h3></div>
+<div class="container-option">
+    <a href="/admin_order/">Chờ xác nhận</a>
+    <a href="/admin_order_done/">Đã hoàn thành</a>
+    <a href="/admin_order_cancel/">Đã hủy</a>
+</div>
+<div class="content">
+    <div class="table">
+        <table>
+            <thead>
+                <tr>
+                    <th>Mã hóa đơn</th>
+                    <th>Ngày đặt hàng</th>
+                    <th>Tên khách hàng</th>
+                    <th>Giá tiền</th>
+                    <th>Chi tiết</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                    <tr id="tr_{{order.id}}">
+                        <td>#HD{{ order.id }}</td>
+                        <td>{{ order.date }}</td>
+                        <td>{{ order.name }}</td>
+                        <td>{{ order.total }}đ</td>
+                        <td><a onclick="showDetail({{order.id}}, '{{order.name}}', '{{order.address}}', '{{order.phone}}', '{{order.date}}', {{order.total}})"><i class="fa fa-info-circle"></i></a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block content_hidden %}
+<div class="overlay" id="overlay" style="display: none;">
+    <div class="detail-container" id="detail_order">
+        <div class="title">
+            <div>
+                <i class="fa fa-pencil-square-o"></i> Chi tiết đơn hàng
+            </div>
+        </div>
+        <div class="close" onclick="closeForm()">
+            <i class="fa fa-times"></i>
+        </div>
+        <div class="buyer-info">
+            <p>Người nhận: <b id="name"> {{order.name}} ({{order}}) </b></p>
+            <p>Địa chỉ: <b> 123 Nguyễn Văn Cừ, Quận 5, TP.HCM </b></p>
+            <p>Ngày đặt hàng: <b> 12/12/2020 </b></p>
+        </div>
+        <div class="detail">
+            <div class="header-product">
+                <p>Sản phẩm</p>
+                <p>Giá tiền</p>
+            </div>
+            <div class="product">
+                <img src="" alt="" id="product_img">
+                <div class="info-product">
+                    <a href="" id="product_name"></a>
+                    <span id="quantity"></span>
+                </div>
+                <div class="price" id="price">
+                    <p></p>
+                </div>
+            </div>
+            <div class="underscore"></div>
+        </div>
+        <div class="total-pay">
+            <p>Tổng tiền: 200.000đ</p>
+        </div>
+        <div class="button">
+            <a href=""><i class="fa fa-check"></i> Xác nhận</a>
+            <a href=""><i class="fa fa-times"></i> Hủy bỏ</a>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function showDetail(orderId, name, address, phone, date, total) {
+        document.getElementById('overlay').style.display = 'block';
+        var productsHtml = '';
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', `/order_items/${orderId}/`);
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                const items = JSON.parse(xhr.responseText);
+                items.forEach(item => {
+                    productsHtml += `
+                        <div class="product">
+                            <img src="${item.image}" alt="" id="product_img">
+                            <div class="info-product">
+                                <a href="" id="product_name">${item.product_name}</a>
+                                <span id="quantity">Số lượng: ${item.quantity}</span>
+                            </div>
+                            <div class="price" id="price">
+                                <p>${item.price}đ</p>
+                            </div>
+                        </div>
+                        <div class="underscore"></div>
+                    `;
+                });
+                var html = `
+                    <div class="title">
+                        <div>
+                            <i class="fa fa-pencil-square-o"></i> Chi tiết đơn hàng
+                        </div>
+                    </div>
+                    <div class="close" onclick="closeForm()">
+                        <i class="fa fa-times"></i>
+                    </div>
+                    <div class="buyer-info">
+                        <p>Người nhận: <b id="name"> ${name} (${phone}) </b></p>
+                        <p>Địa chỉ: <b> ${address} </b></p>
+                        <p>Ngày đặt hàng: <b> ${date} </b></p>
+                    </div>
+                    <div class="detail">
+                        <div class="header-product">
+                            <p>Sản phẩm</p>
+                            <p>Giá tiền</p>
+                        </div>
+                        ${productsHtml}
+                        <div class="total-pay">
+                            <p>Tổng tiền: ${total}đ</p>
+                        </div>
+                        <div class="button">
+                            <a href="" onclick="closeForm()"><i class="fa fa-sign-out"></i> Quay lại</a>
+                        </div>
+                    </div>
+                `;
+                document.getElementById('detail_order').innerHTML = html;
+            }
+        };
+        xhr.send();
+        console.log('da click');
+    }
+       
+
+    function closeForm() {
+        document.getElementById('overlay').style.display = 'none';
+    }
+
+</script>
+{% endblock %}

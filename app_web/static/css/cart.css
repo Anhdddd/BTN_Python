@@ -1,0 +1,120 @@
+main {
+    padding: 10px 24px;
+    width: 700px;
+    margin:80px auto 20px;
+    background: #fff;
+    border-radius: 10px;
+}
+main .title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #000;
+    margin-bottom: 30px;
+}
+main table.container-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+main table.container-table thead {
+    background-color: rgb(49, 98, 203);
+    color: #fff;
+    font-weight: 500;
+}
+/* Thêm đường kẽ ngang cho các dòng trong table */
+main table.container-table th, td {
+    border-right: none;
+    border-bottom: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+}
+main .container-table th:nth-child(1) {
+    width: 35%;
+}
+main .container-table th:nth-child(2) {
+    width: 25%;
+}
+main .container-table th:nth-child(3) {
+    width: 20%;
+}
+main .container-table th:nth-child(4) {
+    width: 10%;
+}
+/*Chỉnh cột số lượng*/
+main .container-table input.quantity-input {
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    border: 1px solid #edf1f7;
+}
+main .container-table input.quantity-input:focus {
+    outline: none;
+}
+main .container-table .quantity-btn.decrease {
+    width: 30px;
+    height: 30px;
+    border-radius: 6px 0 0 6px;
+    border: 1px solid #edf1f7;
+    cursor: pointer;
+    background: #e4e9f2;
+}
+main .container-table .quantity-btn.increase {
+    width: 30px;
+    height: 30px;
+    border-radius: 0 6px 6px 0;
+    border: 1px solid #edf1f7;
+    background: #e4e9f2;
+    cursor: pointer;
+}
+/*Chỉnh cột xóa*/
+main .container-table .delete-btn {
+    text-align: center;
+    background-color: #fff;
+    border: none;
+}
+main .container-table .delete-btn img{
+    cursor: pointer;
+    width: 60%;
+}
+/*Chỉnh kích thước ảnh trong table con*/
+main .product-info td:nth-child(1) {
+    width: 25%;
+}
+main .product-info img {
+    width: 100%;
+}
+/*CỠ chữ của table cha ko ảnh hưởng đến table con*/
+main .product-info td {
+    border-bottom: none;
+    padding: 0;
+    font-size: 14px;
+}
+/*Tổng tiền*/
+main .result {
+    display: flex;
+    justify-content: space-between;
+}
+main .result .label {
+    font-size: 16px;
+    font-weight: 700;
+    color: #000;
+}
+main .total-price {
+    font-size: 16px;
+    font-weight: 700;
+    color: #000;
+}
+main .btn-buy{
+    background-color: rgb(49, 98, 203);
+    color: #fff;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 17px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 100%;
+}

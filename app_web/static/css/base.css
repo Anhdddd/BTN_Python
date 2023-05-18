@@ -1,0 +1,107 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'helvetica', Arial, sans-serif;
+    background-color: #edecec;
+    min-width: 1200px;
+}
+header {
+  display: flex;
+  background-color: rgb(49, 98, 203);
+  padding: 0 50px;
+  align-items: center;
+  justify-content: space-between;
+  height: 50px;
+  box-shadow: 0 5px 10px rgb(224, 229, 240);
+}
+
+.logo-img img {
+    height: 100%;
+}
+
+header nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+}
+header nav form {
+    margin-right: 20px;
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    width: 330px;
+}
+header nav form input {
+    height: 30px;
+    min-width: 280px;
+    border: none;
+    border-radius: 5px;
+    font-size: 12px;
+}
+header nav form button {
+    height: 30px;
+    width: 40px;
+    color: #fff;
+    background-color: rgb(71, 114, 208);
+    border-radius: 5px;
+    border: none;
+}
+header nav a {
+    color: #000;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    color: #fff;
+    margin-right: 15px;
+}
+header nav .cart {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(49, 98, 203);
+    height: 100%;
+    color: #fff;
+    width: 70px;
+    cursor: pointer;
+}
+header nav .cart{
+    font-size: 20px;
+}
+header nav .cart .badge {
+    position: absolute;
+    top: 8px;
+    right: 14px;
+}
+header nav a:hover {
+    text-decoration: underline;
+}
+
+
+
+.badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: red;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 50%;
+    font-size: 12px;
+}
+footer {
+    background-color: #adb1ad35;
+    padding: 20px 0px;
+    margin-top: 10px;
+}
+footer .note {
+    margin-left: 20px;
+    line-height: 20px;
+    color: #7c7777;
+    font-size: 12px;
+    font-weight: 500;
+}
+footer .note .members {
+    margin-left: 13px;
+}

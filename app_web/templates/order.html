@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    Đặt hàng
+{% endblock %}
+
+{% block link_css %}
+    <link rel="stylesheet" href="{% static 'css/order.css' %}">
+{% endblock %}
+
+{% block content %}
+<main>
+    <div class="title">
+        <p>Thông tin nhận hàng</p>
+    </div>
+    <div class="container-info">
+        <form action="{% url 'order' %}" method="post">
+            {% csrf_token %}
+            <label for="name">Họ và tên</label>
+            <input type="text" id="name" name="name" value="{{customer.name}}">
+            <label for="phone">Số điện thoại</label>
+            <input type="text" id="phone" name="phone" value="{{customer.phone}}">
+            <label for="address">Địa chỉ</label>
+            <input type="text" id="address" name="address" value="{{customer.address}}">
+            <input type="hidden" id="cart_id" name="cart_name">
+            <input type="submit" id="submit_form" class="submit-order" value="Xác nhận mua" onclick="done_submit()">
+        </form>
+    </div>
+</main>
+
+<div class="thongtinhoadon">
+    <div class="title-hoadon">
+        <p>THÔNG TIN HOÁ ĐƠN</p>
+    </div>
+    <!-- <div class="result">
+        <div class="label">
+            <p>Tổng tiền:</p>
+        </div>
+        <div class="total-price" id="total_price">
+            <p>$600.00</p>
+        </div>
+    </div> -->
+</div>
+<script>
+    // Đặt giá trị của input ẩn bằng dữ liệu giỏ hàng
+    var cart = localStorage.getItem('cart');
+    document.getElementById('cart_id').value = cart;
+
+    function done_submit()
+    {
+        localStorage.removeItem('cart')
+    }
+</script>
+{% endblock %}

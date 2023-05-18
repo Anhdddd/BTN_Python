@@ -1,0 +1,138 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+
+{% block title %}
+Quản lý sản phẩm
+{% endblock %}
+
+{% block link_css%}
+<link rel="stylesheet" href="{% static 'css/admin_product.css' %}">
+{% endblock %}
+
+
+{% block content %}
+<div class="title"><h3>Sản phẩm</h3></div>
+    <div class="content">
+        <div class="container-option">
+            <form action="{% url 'search_product_admin' %}" method="get">
+                <input type="text" name="text-search" placeholder=" Search...">
+                <button type="submit"><i class="fa fa-search"></i></button>
+            </form>
+            <button id="button-add">Thêm</button>
+        </div>
+        <div class="table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Hình ảnh</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Loại sản phẩm</th>
+                        <th>Chỉnh sửa</th>
+                        <th>Xoá</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in products %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td><img src="{{ product.image.url }}" alt=""></td>
+                            <td>{{ product.name }}</td>
+                            <td>{{product.get_type_display}}</td>
+                            <td><a onclick="getInforUpdate({{ product.id }})"><i class="fa fa-pencil-square-o"></i></a></td>
+                            <td><a href=""><i class="fa fa-trash"></i></a></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_hidden %}
+<div id="overlay" style="display: none;">
+    <form action="{% url 'add_product' %}" method="post" enctype="multipart/form-data" id="form-add">
+        {% csrf_token %}
+        <i class="fa fa-times close-button" style="font-size: 25px; cursor: pointer;" onclick="closeForm('overlay')"></i>
+        <div class="left">
+          <input type="file" name="image_upload" id="img_file_add" accept="image/*" onchange="previewFile(this, 'img_add')" style="display: none">
+          <img id="img_add" src="" height="200" width="90%" alt="Them anh" onclick="chooseFile('img_file_add')">
+        </div>
+        <div class="right">
+          <input type="text" name="name" placeholder="Tên sản phẩm">
+          <input type="text" name="type" placeholder="Loại sản phẩm">
+          <input type="text" name="price" placeholder="Giá sản phẩm">
+          <input type="text" name="description" placeholder="Mô tả sản phẩm">
+          <button type="submit"><i class="fa fa-plus"></i> Thêm</button>
+        </div>
+    </form>   
+</div>
+
+<!---------------------- Form update ----------------------->
+<div id="overlay_update" style="display: none;">
+    <form action="{% url 'update_product' %}" method="post" enctype="multipart/form-data" id="form-add">
+        {% csrf_token %}
+        <i class="fa fa-times close-button" style="font-size: 25px; cursor: pointer;" onclick="closeForm('overlay_update')"></i>
+        <div class="left">
+            <input type="file" name="image_update_file" id="img_file_update" accept="image/*" onchange="previewFile(this, 'img_update')" style="display: none">
+            <img id="img_update" name="img_update"  src="" height="200" width="90%" alt="Them anh" onclick="chooseFile('img_file_update')">
+        </div>
+        <div class="right">
+            <input type="hidden" name="id_update" id="id_update">
+            <input type="text" name="name_update" id="name_update" placeholder="Tên sản phẩm">
+            <input type="text" name="type_update" id="type_update" placeholder="Loại sản phẩm">
+            <input type="text" name="price_update" id="price_update" placeholder="Giá sản phẩm">
+            <input type="text" name="description_update" id="description_update" placeholder="Mô tả sản phẩm">
+            <button type="submit"><i class="fa fa-pencil"></i> Cập nhật</button>
+            <button type="button" style="margin-top: 10px;" class="button-cancel"><i class="fa fa-remove"></i> Hủy bỏ</button>
+        </div>
+    </form>   
+</div>
+
+<script>
+    document.getElementById('button-add').addEventListener('click', function() {
+        document.getElementById('overlay').style.display = 'block';
+    });
+    function closeForm(id_form) {
+        document.getElementById(id_form).style.display = 'none';
+    }
+    function previewFile(input, id_img) {
+        var file = input.files[0];
+        var reader = new FileReader();
+       
+        reader.addEventListener("load", function () {
+          var img = document.getElementById(id_img);
+          img.src = reader.result;
+        }, false);
+       
+        if (file) {
+          reader.readAsDataURL(file);
+        }
+    }
+    function chooseFile(id_file) {
+        var input = document.getElementById(id_file);
+        input.click();
+    }
+    function getInforUpdate(id)
+    {
+        document.getElementById('overlay_update').style.display = 'block';
+        var url = "/get_infor_update_product/" + id + "/";
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var data = JSON.parse(this.responseText);
+                document.getElementById('id_update').value = data.id;
+                document.getElementById('name_update').value = data.name;
+                document.getElementById('type_update').value = data.type;
+                document.getElementById('price_update').value = data.price;
+                document.getElementById('img_update').src = data.image;
+                document.getElementById('description_update').value = data.description;
+                console.log(data);
+            }
+        };
+        xhr.open("GET", url, true);
+        xhr.send();
+    }
+    
+</script>
+{% endblock %}

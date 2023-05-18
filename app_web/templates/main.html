@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    Thực phẩm xanh
+{% endblock %}
+
+{% block link_css %}
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+{% endblock %}
+
+{% block content %}
+<nav class="container-nav">
+    <a href="/product/meat"><img src="{% static 'image/type_product/thit.png' %}" alt=""> <span>Thịt</span></a>
+    <a href="/product/fish"><img src="{% static 'image/type_product/ca.jpg' %}" alt=""> <span>Cá</span></a>
+    <a href="/product/vegetable"><img src="{% static 'image/type_product/raucutraicay.png' %}" alt=""> <span>Rau, củ, nấm, trái cây</span></a>
+    <a href="/product/milk"><img src="{% static 'image/type_product/suatuoi.png' %}" alt=""> <span>Sữa tươi</span></a>
+    <a href="/product/noodel"><img src="{% static 'image/type_product/mianlien.png' %}" alt=""> <span>Mì gói</span></a>
+    <a href="/product/drink"><img src="{% static 'image/type_product/douong.png' %}" alt=""><span>Đồ uống</span></a>
+    <a href="/product/snack"><img src="{% static 'image/type_product/dohop.jpg' %}" alt=""> <span>Bánh kẹo</span></a>
+    <a href="/product/misc"><img src="{% static 'image/type_product/thucphamkhac.jpg' %}" alt=""> <span>Khác</span></a>
+</nav>
+
+<main>
+    <div class="row-products">
+        {% for product in products %}
+        <div class="product">
+        <div class="product-img"><img src="{{ product.image.url }}" alt=""></div>
+        <div class="product-title">{{ product.name }}</div>
+        <div class="product-price">{{ product.price }}đ</div>
+        <div class="product-buy"><button onclick="addToCart({{ product.id }})">CHỌN MUA</button></div>
+        </div>
+        {% if forloop.counter|divisibleby:4 and not forloop.last %}
+        </div><div class="row-products">
+        {% endif %}
+        {% endfor %}
+   </div>   
+</main>
+<script>
+    // Đối tượng để lưu trữ id sản phẩm và số lượng
+    var cart = {};
+    if (localStorage.getItem('cart')) {
+        cart = JSON.parse(localStorage.getItem('cart'));
+    }
+    // Hàm xử lý khi người dùng bấm vào nút thêm
+    function addToCart(productId) {
+        // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
+        if (cart[productId]) {
+            // Nếu sản phẩm đã có trong giỏ hàng, tăng số lượng lên 1
+            cart[productId]++;
+        } else {
+            // Nếu sản phẩm chưa có trong giỏ hàng, thêm sản phẩm vào giỏ hàng với số lượng là 1
+            cart[productId] = 1;
+        }
+        localStorage.setItem('cart', JSON.stringify(cart));
+        document.getElementById("number_notifi").style.display = "block";
+        document.getElementById("number_notifi").innerHTML = Object.keys(cart).length;
+    }
+</script>
+
+{% endblock %}

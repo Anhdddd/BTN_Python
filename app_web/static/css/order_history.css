@@ -1,0 +1,144 @@
+main .customer {
+font-size: 13px;
+font-weight: 700;
+padding: 10px 10px;
+width: 700px;
+margin: 0px auto 5px;
+background: #fff;
+}
+main .customer .choose {
+    display: flex;
+    justify-content: space-between;
+}
+main .customer .choose a {
+    text-decoration: none;
+    font-weight: 500;
+    color: #405c97;
+}
+
+main .select-show {
+font-size: 13px;
+font-weight: 500;
+margin-bottom: 10px;
+padding: 10px 10px;
+width: 700px;
+margin: 0px auto 5px;
+background: #fff;
+}
+main .select-show a {
+    font-size: 13px;
+    padding: 7px 10px;
+    text-decoration: none;
+    color: black;
+}
+main .select-show a:hover {
+    border-bottom: 4px solid #405c97;
+}
+
+
+main .container-history {
+font-size: 13px;
+padding: 10px 10px;
+width: 700px;
+margin: 0px auto 5px;
+background: #fff;
+}
+
+main .info {
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+main .info .order-id{
+    font-size: 13px;
+    font-weight: 700;
+}
+main .info .status-confirm {
+    display: flex;
+    width: 90px;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 700;
+    color: rgb(11, 152, 33);
+}
+main .info .status-cancel {
+    display: flex;
+    width: 70px;
+    justify-content: space-between;
+    font-size: 13px;
+    font-weight: 700;
+    color: red;
+}
+main .info .status-wait {
+    display: flex;
+    width: 80px;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 700;
+    color: rgb(252, 206, 3);
+}
+main .info .status-confirm img, .status-cancel img, .status-wait img {
+    align-self: center;
+}
+
+main .details {
+padding-bottom: 10px;
+border-bottom: 1px solid gray;
+}
+
+main .details .buyer-info{
+    margin-top: 10px;
+}
+main .details .buyer-info p{
+    color: #4c4a4a;
+    margin: 3px;
+}
+
+
+main .details .product {
+display: block;
+height: 50px;
+margin-top: 20px;
+}
+main .product > div {
+    float: left;
+}
+main .product .info-product {
+    width: 70%;
+}
+main .details .product a {
+    display: block;
+    color: #000;
+    text-decoration: none;
+    margin-top: 3px;
+}
+main .details .product span {
+    display: block;
+    margin-top: 5px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #706e6e;
+}
+main .details .product .price {
+    float: right;
+    text-align: right;
+}
+main .details .product .price p {
+    padding: 0;
+    margin-top: 3px;
+    font-size: 13px;
+    font-weight: 500;
+}
+main .details .product img {
+    float: left;
+    width: 50px;
+    height: 50px;
+    margin-right: 5px;
+}
+
+main .details .total-pay {
+    display: flex;
+    justify-content: end;
+    margin-top: 10px;
+    font-weight: 700;
+}

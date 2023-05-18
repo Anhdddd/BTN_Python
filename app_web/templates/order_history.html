@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    Thực phẩm xanh
+{% endblock %}
+
+{% block link_css %}
+    <link rel="stylesheet" href="{% static 'css/order_history.css' %}">
+{% endblock %}
+
+{% block content %}
+<main>
+    <div class="customer">
+        <p>(Anh) Trần Ngọc Tín</p>
+        <div class="choose">
+            <a href=""><img height="13px" width="13px" src="{% static 'image/icon/icon-edit.png' %}" alt=""> Chỉnh sửa thông tin</a>
+            <a href=""><img height="13px" width="13px" src="{% static 'image/icon/icon-exit.png' %}" alt=""> Thoát tài khoản</a>
+        </div> 
+    </div>
+    <div class="select-show">
+      <a href="">Tất cả</a>
+        <a href="">Đã giao</a>
+        <a href="">Chờ xác nhận</a>
+        <a href="">Đã huỷ</a>
+    </div>
+  
+    <div class="container-history">
+      {% for order_item in order %}
+        <div class="info">
+          <div class="order-id">
+            <p>#ĐH{{ order_item.id }}</p>
+          </div>
+          {% if order_item.status == 'confirm' %}
+            <div class="status-confirm">
+              <img src="{% static 'image/icon/icon-confirm.png' %}" height="13px" alt="">
+              <p>{{ order_item.get_status_display }}</p>
+            </div>
+          {% elif order_item.status == 'cancel' %}
+            <div class="status-cancel">
+              <img src="{% static 'image/icon/icon-cancel.png' %}" height="13px" alt="">
+              <p>{{ order_item.get_status_display }}</p>
+            </div>
+          {% else %}
+            <div class="status-wait">
+              <img src="{% static 'image/icon/icon-wait.png' %}" height="13px" alt="">
+              <p>{{ order_item.get_status_display }}</p>
+            </div>
+          {% endif %}
+        </div>
+        <div class="details">
+          <a href=""  onclick="detail(event, {{order_item.id}})">Chi tiết</a>
+          <div class="order-detail" id="order_detail{{order_item.id}}" style="display: none;" > <!--Ẩn hiển khi click-->
+            <input type="hidden" id="AnHien{{order_item.id}}" value="An">
+            <div class="products">
+              <div class="buyer-info">
+                  <p>Người nhận: {{ customer.name }}({{ customer.phone }})</p>
+                  <p>Địa chỉ: {{ order_item.address }}</p>
+                  <p>Ngày đặt hàng: {{ order_item.date }}</p>
+              </div>
+              {% for info_item in list_order_item %}
+                {% if info_item.order_id == order_item.id %}
+                  <div class="product">
+                    <img src="{{info_item.product.image.url}}" alt="anh">
+                    <div class="info-product">
+                      <a href="">{{info_item.product.name}}</a>
+                      <span>Số lượng: {{ info_item.quantity }}</span>
+                    </div>
+                    <div class="price">
+                      <p>Giá: {{ info_item.price }}</p>
+                    </div>
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+            <div class="total-pay">
+              <p>Tổng tiền: {{ order_item.total }}</p>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+</main>
+
+<script>
+  function detail(event, id) {
+    event.preventDefault();
+    console.log("Da nhan", id);
+    var AnHien = document.getElementById("AnHien"+id).value;
+    if (AnHien == "An") {
+      document.getElementById("AnHien"+id).value = "Hien";
+      document.getElementById("order_detail"+id).style.display = "block";
+      console.log("Hien");
+    } else {
+      document.getElementById("AnHien"+id).value = "An";
+      document.getElementById("order_detail"+id).style.display = "none";
+      console.log("An");
+    }
+  }
+</script>
+{% endblock %}
