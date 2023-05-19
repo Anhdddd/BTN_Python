@@ -16,27 +16,27 @@
 </head>
 <body>
     <section class="nav-section">
-        <header>
+        <header style="cursor: pointer;" onclick="window.location.href='/admin_product/'">
             <img src="{% static 'image/logo.png' %}" alt="logo">
         </header>
         <nav>
             <!-- <div><i class="fa fa-dashboard"></i>Dashboard</div> -->
-            <div><i class="fa fa-product-hunt"></i>Product</div>
-            <div><i class="fa fa-shopping-cart"></i>Order</div>
-            <div><i class="fa fa-user"></i>User</div>             
+            <div id="nav_product" onclick="window.location.href='/admin_product/'"><i class="fa fa-product-hunt"></i>Product</div>
+            <div id="nav_order" onclick="window.location.href='/admin_order/'"><i class="fa fa-shopping-cart"></i>Order</div>
+            <div id="nav_user" onclick="window.location.href='/admin_customer/'"><i class="fa fa-user"></i>User</div>             
         </nav>
     </section>
     <section class="content-section">
         <header>
             <div class="notification">
                 <span class="icon">🔔</span>
-                <span class="badge" id="number_notifi">3</span>
+                <span class="badge" id="number_notifi">{{count}}</span>
             </div>
             <div class="user-info">
                 <span class="user-avatar">👨</span>
                 <span class="user-name">Admin</span>
             </div>
-            <div class="logout">
+            <div class="logout" onclick="window.location.href = '/checklogout/'">
                 <span class="icon"><i class="fa fa-sign-out"></i></span>
                 <span class="text">Logout</span>
             </div>

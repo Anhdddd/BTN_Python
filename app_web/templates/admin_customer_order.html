@@ -6,16 +6,16 @@
 {% endblock %}
 
 {% block link_css %}
-    <link rel="stylesheet" href="{% static 'css/admin_order.css' %}">
+    <link rel="stylesheet" href="{% static 'css/admin_customer_order.css' %}">
 {% endblock %}
 
 {% block content %}
-<div class="title"><h3>Đặt hàng</h3></div>
-<div class="container-option">
+<div class="title"><h3>Lịch sử đặt hàng</h3></div>
+<!-- <div class="container-option">
     <a href="/admin_order/">Chờ xác nhận</a>
     <a href="/admin_order_done/">Đã hoàn thành</a>
     <a href="/admin_order_cancel/">Đã hủy</a>
-</div>
+</div> -->
 <div class="content">
     <div class="table">
         <table>
@@ -23,27 +23,38 @@
                 <tr>
                     <th>Mã hóa đơn</th>
                     <th>Ngày đặt hàng</th>
-                    <th>Tên khách hàng</th>
                     <th>Giá tiền</th>
+                    <th>Tình trạng</th>
                     <th>Chi tiết</th>
-                    <th>Xác nhận</th>
-                    <th>Từ chối</th>
                 </tr>
             </thead>
             <tbody>
-                {% load humanize %}
-                    {% for order in orders %}
+                {% for order in orders %}
                     <tr id="tr_{{order.id}}">
                         <td>#HD{{ order.id }}</td>
                         <td>{{ order.date }}</td>
-                        <td>{{ order.name }}</td>
-                        <td>{{ order.total|intcomma }}đ</td>
+                        <td>{{ order.total }}đ</td>
+                        <td>
+                            {% if order.status == 'confirm' %}
+                                <div class="status-confirm">
+                                <img src="{% static 'image/icon/icon-confirm.png' %}" height="13px" alt="">
+                                <p>{{ order.get_status_display }}</p>
+                                </div>
+                            {% elif order.status == 'cancel' %}
+                                <div class="status-cancel">
+                                <img src="{% static 'image/icon/icon-cancel.png' %}" height="13px" alt="">
+                                <p>{{ order.get_status_display }}</p>
+                                </div>
+                            {% else %}
+                                <div class="status-wait">
+                                <img src="{% static 'image/icon/icon-wait.png' %}" height="13px" alt="">
+                                <p>{{ order.get_status_display }}</p>
+                                </div>
+                            {% endif %}
+                        </td>
                         <td><a onclick="showDetail({{order.id}}, '{{order.name}}', '{{order.address}}', '{{order.phone}}', '{{order.date}}', {{order.total}})"><i class="fa fa-info-circle"></i></a></td>
-                        <td><a href="/confirm_order/{{order.id}}/"><i class="fa fa-check"></i></a></td>
-                        <td><a href="/cancel_order/{{order.id}}/"><i class="fa fa-times"></i></a></td>
                     </tr>
-                    {% endfor %}
-
+                {% endfor %}
             </tbody>
         </table>
     </div>
@@ -53,43 +64,7 @@
 {% block content_hidden %}
 <div class="overlay" id="overlay" style="display: none;">
     <div class="detail-container" id="detail_order">
-        <div class="title">
-            <div>
-                <i class="fa fa-pencil-square-o"></i> Chi tiết đơn hàng
-            </div>
-        </div>
-        <div class="close" onclick="closeForm()">
-            <i class="fa fa-times"></i>
-        </div>
-        <div class="buyer-info">
-            <p>Người nhận: <b id="name"> {{order.name}} ({{order}}) </b></p>
-            <p>Địa chỉ: <b> 123 Nguyễn Văn Cừ, Quận 5, TP.HCM </b></p>
-            <p>Ngày đặt hàng: <b> 12/12/2020 </b></p>
-        </div>
-        <div class="detail">
-            <div class="header-product">
-                <p>Sản phẩm</p>
-                <p>Giá tiền</p>
-            </div>
-            <div class="product">
-                <img src="" alt="" id="product_img">
-                <div class="info-product">
-                    <a href="" id="product_name"></a>
-                    <span id="quantity"></span>
-                </div>
-                <div class="price" id="price">
-                    <p></p>
-                </div>
-            </div>
-            <div class="underscore"></div>
-        </div>
-        <div class="total-pay">
-            <p>Tổng tiền: 200.000đ</p>
-        </div>
-        <div class="button">
-            <a href=""><i class="fa fa-check"></i> Xác nhận</a>
-            <a href=""><i class="fa fa-times"></i> Hủy bỏ</a>
-        </div>
+        
     </div>
 </div>
 
@@ -142,8 +117,7 @@
                             <p>Tổng tiền: ${total}đ</p>
                         </div>
                         <div class="button">
-                            <a href="/confirm_order/${orderId}/"><i class="fa fa-check"></i> Xác nhận</a>
-                            <a href="/cancel_order/${orderId}/"><i class="fa fa-times"></i> Hủy bỏ</a>
+                            <a href="" onclick="closeForm()"><i class="fa fa-sign-out"></i> Quay lại</a>
                         </div>
                     </div>
                 `;

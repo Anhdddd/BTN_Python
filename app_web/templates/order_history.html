@@ -12,17 +12,17 @@
 {% block content %}
 <main>
     <div class="customer">
-        <p>(Anh) Trần Ngọc Tín</p>
+        <p> {{customer.name}}</p>
         <div class="choose">
             <a href=""><img height="13px" width="13px" src="{% static 'image/icon/icon-edit.png' %}" alt=""> Chỉnh sửa thông tin</a>
-            <a href=""><img height="13px" width="13px" src="{% static 'image/icon/icon-exit.png' %}" alt=""> Thoát tài khoản</a>
+            <a href="/checklogout/"><img height="13px" width="13px" src="{% static 'image/icon/icon-exit.png' %}" alt=""> Thoát tài khoản</a>
         </div> 
     </div>
     <div class="select-show">
-      <a href="">Tất cả</a>
-        <a href="">Đã giao</a>
-        <a href="">Chờ xác nhận</a>
-        <a href="">Đã huỷ</a>
+      <a href="/purchase_history/all">Tất cả</a>
+        <a href="/purchase_history/confirm">Đã xác nhận</a>
+        <a href="/purchase_history/pending">Chờ xác nhận</a>
+        <a href="/purchase_history/cancel">Đã huỷ</a>
     </div>
   
     <div class="container-history">
@@ -67,7 +67,7 @@
                       <span>Số lượng: {{ info_item.quantity }}</span>
                     </div>
                     <div class="price">
-                      <p>Giá: {{ info_item.price }}</p>
+                      <p>Giá: {{ info_item.price }}đ</p>
                     </div>
                   </div>
                 {% endif %}

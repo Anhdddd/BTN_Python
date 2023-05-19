@@ -31,11 +31,52 @@
                         <td>{{ forloop.counter }}</td>
                         <td>{{ customer.name }}</td>
                         <td>{{ customer.phone }}</td>
-                        <td><a href=""><i class="fa fa-book"></i></a></td>
-                        <td><a href=""><i class="fa fa-info-circle"></i></a></td>
+                        <td><a href="/get_order_customer/{{customer.id}}"><i class="fa fa-book"></i></a></td>
+                        <td><div onclick="getInforCustomer({{customer.id}})"><i class="fa fa-info-circle"></i></div></td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
+{% endblock %}
+
+{% block content_hidden %}
+<!---------------------- Form update ----------------------->
+<div id="overlay" style="display: none;" id="form_update">
+    <form action="" method="post" class="container-info">
+        {% csrf_token %}
+        <label for="name">Họ và tên</label>
+        <input type="text" id="name" name="name">
+        <label for="phone">Số điện thoại</label>
+        <input type="text" id="phone" name="phone" >
+        <label for="address">Địa chỉ</label>
+        <input type="text" id="address" name="address">
+        <div class="button" onclick="closeForm('overlay')">
+            <i class="fa fa-sign-out"></i> Quay lại
+        </div>
+    </form>
+</div>
+
+<script>
+    function closeForm(id_form) {
+        document.getElementById(id_form).style.display = 'none';
+    }
+    function getInforCustomer(id)
+    {
+        document.getElementById('overlay').style.display = 'block';
+        var url = "/get_infor_customer/" + id + "/";
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var data = JSON.parse(this.responseText);
+                document.getElementById('name').value = data.name;
+                document.getElementById('phone').value = data.phone;
+                document.getElementById('address').value = data.address;
+            }
+        };
+        xhr.open("GET", url, true);
+        xhr.send();
+    }
+    
+</script>
 {% endblock %}

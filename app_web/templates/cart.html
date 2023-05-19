@@ -104,6 +104,11 @@
                 return product.id == id;
             });
             product.quantity--;
+            if (product.quantity == 0) 
+            {
+                remove_item_cart(product.id)
+                return;
+            }
             element_update = "quantity_of_id_" + id
             document.getElementById(element_update).value = product.quantity;
             element_update = "total_price_of_" + id

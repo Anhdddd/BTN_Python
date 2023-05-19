@@ -56,3 +56,12 @@ main .under-form a {
 main .under-form a:hover {
     text-decoration: underline;
 }
+
+.error-notifi {
+    color: red;
+    font-size: 14px;
+    margin-bottom: 10px;
+    margin-top: -10px;
+    text-align: center;
+    
+}

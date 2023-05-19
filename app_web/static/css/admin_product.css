@@ -170,4 +170,13 @@ tr:nth-child(even) {
     from { top: 0; }
     to { top: 50%; }
 }
+
+#nav_product {
+    background-color: rgb(49, 98, 203);
+    border-radius: 5px;
+    cursor: pointer;
+}
+.nav-section nav div:hover #nav_product {
+    pointer-events: none;
+}
 /* --------------------------------------------------------- */

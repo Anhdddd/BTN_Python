@@ -229,3 +229,9 @@ tr:nth-child(even) {
     font-weight: 700;
     margin-right: 10px;    
 }
+
+#nav_order {
+    background-color: rgb(49, 98, 203);
+    border-radius: 5px;
+    cursor: pointer;
+}

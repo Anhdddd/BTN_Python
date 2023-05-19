@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     {% block link_css %}
     {% endblock %}
@@ -25,13 +26,26 @@
                 <input type="text" id="text-search" name="text-search" placeholder="Tìm kiếm..."/>
                 <button type="submit" style="cursor: pointer;"><i class="fa fa-search"></i></button>
             </form>
-            <a href="{% url 'purchase_history' %}">Đơn hàng của bạn</a>
+            <a href="/purchase_history/all">Đơn hàng của bạn</a>
             <div class="cart" id="cart">
                 <i class='fas fa-shopping-cart'></i>
                 <span class="badge" id="number_notifi">0</span>
             </div>
-            <div><i class="fa fa-user" style="color: white"></i>
+            {% if request.session.username %}
+            <div onclick="window.location.href = '/checklogin/'" style="cursor: pointer; color: white; display: none; font-size: 20px;">
+                <i class="fa fa-user"></i>
             </div>
+            <div onclick="window.location.href = '/checklogout/'" style="cursor: pointer; color: white; display: block; font-size: 20px;">
+                <i class="fa fa-sign-out"></i>
+            </div>
+            {% else %}
+            <div onclick="window.location.href = '/checklogin/'" style="cursor: pointer; color: white; display: block; font-size: 20px;">
+                <i class="fa fa-user"></i>
+            </div>
+            <div onclick="window.location.href = '/checklogout/'" style="cursor: pointer; color: white; display: none; font-size: 20px;">
+                <i class="fa fa-sign-out"></i>
+            </div>
+            {% endif %}
         </nav>
     </header>
     <script>

@@ -40,7 +40,7 @@ Quản lý sản phẩm
                             <td>{{ product.name }}</td>
                             <td>{{product.get_type_display}}</td>
                             <td><a onclick="getInforUpdate({{ product.id }})"><i class="fa fa-pencil-square-o"></i></a></td>
-                            <td><a href=""><i class="fa fa-trash"></i></a></td>
+                            <td><a href="/admin_product/delete/{{product.id}}/"><i class="fa fa-trash"></i></a></td>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -50,6 +50,7 @@ Quản lý sản phẩm
 {% endblock %}
 
 {% block content_hidden %}
+<!-- ------------Form add------------------------------ -->
 <div id="overlay" style="display: none;">
     <form action="{% url 'add_product' %}" method="post" enctype="multipart/form-data" id="form-add">
         {% csrf_token %}
@@ -59,10 +60,20 @@ Quản lý sản phẩm
           <img id="img_add" src="" height="200" width="90%" alt="Them anh" onclick="chooseFile('img_file_add')">
         </div>
         <div class="right">
-          <input type="text" name="name" placeholder="Tên sản phẩm">
-          <input type="text" name="type" placeholder="Loại sản phẩm">
-          <input type="text" name="price" placeholder="Giá sản phẩm">
-          <input type="text" name="description" placeholder="Mô tả sản phẩm">
+          <input type="text" name="name" placeholder="Tên sản phẩm" required>
+          <!-- <input type="text" name="type" placeholder="Loại sản phẩm"> -->
+          <select name="type_update" id="type_update" style="height: 30px; margin-bottom: 10px;" aria-placeholder="Loại sản phẩm" required>
+            <option value="fish">Cá</option>
+            <option value="meat">Thịt</option>
+            <option value="vegetable">Rau củ trái cây</option>
+            <option value="milk">Sữa</option>
+            <option value="drink">Đồ uống</option>
+            <option value="noodel">Mì gói</option>
+            <option value="snack">Bánh kẹo</option>
+            <option value="misc">Khác</option>
+        </select> 
+          <input type="text" name="price" placeholder="Giá sản phẩm" required>
+          <input type="text" name="description" placeholder="Mô tả sản phẩm" required>
           <button type="submit"><i class="fa fa-plus"></i> Thêm</button>
         </div>
     </form>   
@@ -79,10 +90,20 @@ Quản lý sản phẩm
         </div>
         <div class="right">
             <input type="hidden" name="id_update" id="id_update">
-            <input type="text" name="name_update" id="name_update" placeholder="Tên sản phẩm">
-            <input type="text" name="type_update" id="type_update" placeholder="Loại sản phẩm">
-            <input type="text" name="price_update" id="price_update" placeholder="Giá sản phẩm">
-            <input type="text" name="description_update" id="description_update" placeholder="Mô tả sản phẩm">
+            <input type="text" name="name_update" id="name_update" placeholder="Tên sản phẩm" required>
+            <!-- <input type="text" name="type_update" id="type_update" placeholder="Loại sản phẩm"> -->
+            <select name="type_update" id="type_update" style="height: 30px; margin-bottom: 10px;">
+                <option value="fish">Cá</option>
+                <option value="meat">Thịt</option>
+                <option value="vegetable">Rau củ trái cây</option>
+                <option value="milk">Sữa</option>
+                <option value="drink">Đồ uống</option>
+                <option value="noodel">Mì gói</option>
+                <option value="snack">Bánh kẹo</option>
+                <option value="misc">Khác</option>
+            </select>            
+            <input type="text" name="price_update" id="price_update" placeholder="Giá sản phẩm" required>
+            <input type="text" name="description_update" id="description_update" placeholder="Mô tả sản phẩm" required>
             <button type="submit"><i class="fa fa-pencil"></i> Cập nhật</button>
             <button type="button" style="margin-top: 10px;" class="button-cancel"><i class="fa fa-remove"></i> Hủy bỏ</button>
         </div>
@@ -127,7 +148,6 @@ Quản lý sản phẩm
                 document.getElementById('price_update').value = data.price;
                 document.getElementById('img_update').src = data.image;
                 document.getElementById('description_update').value = data.description;
-                console.log(data);
             }
         };
         xhr.open("GET", url, true);

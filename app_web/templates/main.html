@@ -21,7 +21,7 @@
     <a href="/product/misc"><img src="{% static 'image/type_product/thucphamkhac.jpg' %}" alt=""> <span>Khác</span></a>
 </nav>
 
-<main>
+<!-- <main>
     <div class="row-products">
         {% for product in products %}
         <div class="product">
@@ -35,7 +35,24 @@
         {% endif %}
         {% endfor %}
    </div>   
+</main> -->
+{% load humanize %}
+<main>
+ <div class="row-products">
+ {% for product in products %}
+ <div class="product">
+ <div class="product-img"><img src="{{ product.image.url }}" alt=""></div>
+ <div class="product-title">{{ product.name }}</div>
+ <div class="product-price">{{ product.price|intcomma }}đ</div>
+ <div class="product-buy"><button onclick="addToCart({{ product.id }})">CHỌN MUA</button></div>
+ </div>
+ {% if forloop.counter|divisibleby:4 and not forloop.last %}
+ </div><div class="row-products">
+ {% endif %}
+ {% endfor %}
+ </div> 
 </main>
+
 <script>
     // Đối tượng để lưu trữ id sản phẩm và số lượng
     var cart = {};
